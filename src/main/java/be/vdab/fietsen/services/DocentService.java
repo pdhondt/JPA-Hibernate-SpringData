@@ -1,7 +1,10 @@
 package be.vdab.fietsen.services;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.NieuweDocent;
+import be.vdab.fietsen.exceptions.DocentBestaatAlException;
 import be.vdab.fietsen.repositories.DocentRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +31,16 @@ public class DocentService {
     }
     public boolean existsById(long id) {
         return docentRepository.existsById(id);
+    }
+    @Transactional
+    public long create(NieuweDocent nieuweDocent) {
+        try {
+            var docent = new Docent(nieuweDocent.voornaam(), nieuweDocent.familienaam(),
+                    nieuweDocent.wedde(), nieuweDocent.emailAdres(), nieuweDocent.geslacht());
+            docentRepository.save(docent);
+            return docent.getId();
+        } catch (DataIntegrityViolationException ex) {
+            throw new DocentBestaatAlException();
+        }
     }
 }

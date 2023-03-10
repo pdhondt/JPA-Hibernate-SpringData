@@ -3,11 +3,13 @@ package be.vdab.fietsen.controllers;
 import be.vdab.fietsen.domain.Docent;
 import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
+import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzigdeDeDocentException;
 import be.vdab.fietsen.services.DocentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -58,6 +60,10 @@ class DocentController {
     }
     @PostMapping("{id}/weddeverhogingen")
     void opslag(@PathVariable long id, @RequestBody @Valid WeddeVerhoging verhoging) {
-        docentService.opslag(id, verhoging.bedrag());
+        try{
+            docentService.opslag(id, verhoging.bedrag());
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new EenAndereGebruikerWijzigdeDeDocentException();
+        }
     }
 }

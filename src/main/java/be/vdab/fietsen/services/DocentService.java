@@ -51,7 +51,7 @@ public class DocentService {
     }
     @Transactional
     public void opslag(long id, BigDecimal bedrag) {
-        docentRepository.findById(id)
+        docentRepository.findAndLockById(id)
                 .orElseThrow(DocentNietGevondenException::new)
                 .opslag(bedrag);
     }

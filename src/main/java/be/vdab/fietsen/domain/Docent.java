@@ -17,6 +17,8 @@ public class Docent {
     private String emailAdres;
     @Enumerated(EnumType.STRING)
     private Geslacht geslacht;
+    @Version
+    private long versie;
 
     public Docent(String voornaam, String familienaam, BigDecimal wedde,
                   String emailAdres, Geslacht geslacht) {
@@ -54,6 +56,11 @@ public class Docent {
     public Geslacht getGeslacht() {
         return geslacht;
     }
+
+    public long getVersie() {
+        return versie;
+    }
+
     public void opslag(BigDecimal bedrag) {
         wedde = wedde.add(bedrag);
     }

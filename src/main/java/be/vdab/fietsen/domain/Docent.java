@@ -54,4 +54,7 @@ public class Docent {
     public Geslacht getGeslacht() {
         return geslacht;
     }
+    public void opslag(BigDecimal bedrag) {
+        wedde = wedde.add(bedrag);
+    }
 }

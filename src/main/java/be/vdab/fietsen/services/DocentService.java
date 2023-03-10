@@ -55,4 +55,13 @@ public class DocentService {
                 .orElseThrow(DocentNietGevondenException::new)
                 .opslag(bedrag);
     }
+    public List<Docent> findByWedde(BigDecimal wedde) {
+        return docentRepository.findByWeddeOrderByFamilienaamAscVoornaamAsc(wedde);
+    }
+    public Optional<Docent> findByEmailAdres(String emailAdres) {
+        return docentRepository.findByEmailAdres(emailAdres);
+    }
+    public int findAantalMetWedde(BigDecimal wedde) {
+        return docentRepository.countByWedde(wedde);
+    }
 }

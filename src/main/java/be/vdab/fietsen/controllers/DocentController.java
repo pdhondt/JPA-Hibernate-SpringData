@@ -66,4 +66,17 @@ class DocentController {
             throw new EenAndereGebruikerWijzigdeDeDocentException();
         }
     }
+    @GetMapping(params = "wedde")
+    List<Docent> findByWedde(BigDecimal wedde) {
+        return docentService.findByWedde(wedde);
+    }
+    @GetMapping(params = "emailAdres")
+    Docent findByEmailAdres(String emailAdres) {
+        return docentService.findByEmailAdres(emailAdres)
+                .orElseThrow(DocentNietGevondenException::new);
+    }
+    @GetMapping(value = "aantal", params = "wedde")
+    int findAantalMetWedde(BigDecimal wedde) {
+        return docentService.findAantalMetWedde(wedde);
+    }
 }

@@ -20,4 +20,11 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
     Optional<Docent> findByEmailAdres(String emailAdres);
 
     int countByWedde(BigDecimal wedde);
+
+    @Query("""
+            select d
+            from Docent d
+            where d.wedde = (select max(dd.wedde) from Docent dd)
+            """)
+    List<Docent> findMetGrootsteWedde();
 }

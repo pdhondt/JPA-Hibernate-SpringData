@@ -1,6 +1,8 @@
 package be.vdab.fietsen.services;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.AantalDocentenPerWedde;
+import be.vdab.fietsen.dto.EnkelNaam;
 import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentBestaatAlException;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
@@ -66,5 +68,14 @@ public class DocentService {
     }
     public List<Docent> findMetGrootsteWedde() {
         return docentRepository.findMetGrootsteWedde();
+    }
+    public BigDecimal findGrootsteWedde() {
+        return docentRepository.findGrootsteWedde();
+    }
+    public List<EnkelNaam> findNamen() {
+        return docentRepository.findNamen();
+    }
+    public List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
+        return docentRepository.findAantalDocentenPerWedde();
     }
 }

@@ -1,6 +1,8 @@
 package be.vdab.fietsen.controllers;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.AantalDocentenPerWedde;
+import be.vdab.fietsen.dto.EnkelNaam;
 import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzigdeDeDocentException;
@@ -82,5 +84,17 @@ class DocentController {
     @GetMapping("metGrootsteWedde")
     List<Docent> findMetGrootsteWedde() {
         return docentService.findMetGrootsteWedde();
+    }
+    @GetMapping("weddes/grootste")
+    BigDecimal findGrootsteWedde() {
+        return docentService.findGrootsteWedde();
+    }
+    @GetMapping("namen")
+    List<EnkelNaam> findNamen() {
+        return docentService.findNamen();
+    }
+    @GetMapping("aantalPerWedde")
+    List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
+        return docentService.findAantalDocentenPerWedde();
     }
 }

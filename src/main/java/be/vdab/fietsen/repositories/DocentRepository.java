@@ -1,6 +1,8 @@
 package be.vdab.fietsen.repositories;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.AantalDocentenPerWedde;
+import be.vdab.fietsen.dto.EnkelNaam;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -27,4 +29,24 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
             where d.wedde = (select max(dd.wedde) from Docent dd)
             """)
     List<Docent> findMetGrootsteWedde();
+
+    @Query("""
+            select max(d.wedde)
+            from Docent d
+            """)
+    BigDecimal findGrootsteWedde();
+
+    @Query("""
+select d.voornaam as voornaam, d.familienaam as familienaam
+from Docent d
+order by d.voornaam, d.familienaam
+""")
+    List<EnkelNaam> findNamen();
+
+    @Query("""
+select d.wedde as wedde, count(d) as aantal
+from Docent d
+group by d.wedde
+""")
+    List<AantalDocentenPerWedde> findAantalDocentenPerWedde();
 }

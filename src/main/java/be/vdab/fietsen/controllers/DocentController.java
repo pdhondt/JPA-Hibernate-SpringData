@@ -97,4 +97,8 @@ class DocentController {
     List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
         return docentService.findAantalDocentenPerWedde();
     }
+    @PostMapping("weddeverhogingen")
+    void algemeneOpslag(@RequestBody @Positive BigDecimal bedrag) {
+        docentService.algemeneOpslag(bedrag);
+    }
 }

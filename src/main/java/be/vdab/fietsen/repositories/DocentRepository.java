@@ -6,6 +6,7 @@ import be.vdab.fietsen.dto.EnkelNaam;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
@@ -37,16 +38,23 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
     BigDecimal findGrootsteWedde();
 
     @Query("""
-select d.voornaam as voornaam, d.familienaam as familienaam
-from Docent d
-order by d.voornaam, d.familienaam
-""")
+            select d.voornaam as voornaam, d.familienaam as familienaam
+            from Docent d
+            order by d.voornaam, d.familienaam
+            """)
     List<EnkelNaam> findNamen();
 
     @Query("""
-select d.wedde as wedde, count(d) as aantal
-from Docent d
-group by d.wedde
-""")
+            select d.wedde as wedde, count(d) as aantal
+            from Docent d
+            group by d.wedde
+            """)
     List<AantalDocentenPerWedde> findAantalDocentenPerWedde();
+
+    @Modifying
+    @Query("""
+            update Docent d
+            set d.wedde = d.wedde + :bedrag
+            """)
+    void algemeneOpslag(BigDecimal bedrag);
 }

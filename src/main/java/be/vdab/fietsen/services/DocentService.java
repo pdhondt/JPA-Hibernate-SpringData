@@ -78,4 +78,8 @@ public class DocentService {
     public List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
         return docentRepository.findAantalDocentenPerWedde();
     }
+    @Transactional
+    public void algemeneOpslag(BigDecimal bedrag) {
+        docentRepository.algemeneOpslag(bedrag);
+    }
 }

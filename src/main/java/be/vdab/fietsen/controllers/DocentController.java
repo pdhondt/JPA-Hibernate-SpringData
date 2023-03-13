@@ -8,6 +8,7 @@ import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzigdeDeDocentException;
 import be.vdab.fietsen.services.DocentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +23,8 @@ import java.util.List;
 class DocentController {
     private final DocentService docentService;
     private record WeddeVerhoging(@NotNull @Positive BigDecimal bedrag){}
+    private record Opslag(@NotNull @Positive BigDecimal bedrag) {}
+    private record NieuweBijnaam(@NotBlank String bijnaam) {}
 
     DocentController(DocentService docentService) {
         this.docentService = docentService;
@@ -98,7 +101,23 @@ class DocentController {
         return docentService.findAantalDocentenPerWedde();
     }
     @PostMapping("weddeverhogingen")
-    void algemeneOpslag(@RequestBody @Positive BigDecimal bedrag) {
-        docentService.algemeneOpslag(bedrag);
+    void algemeneOpslag(@RequestBody @Valid Opslag opslag) {
+        docentService.algemeneOpslag(opslag.bedrag());
+    }
+    @PostMapping("{id}/bijnamen")
+    void voegBijnaamToe(@PathVariable long id,
+                        @RequestBody @Valid NieuweBijnaam nieuweBijnaam) {
+        docentService.voegBijnaamToe(id, nieuweBijnaam.bijnaam());
+    }
+    @DeleteMapping("{id}/bijnamen/{bijnaam}")
+    void verwijderBijnaam(@PathVariable long id,
+                          @PathVariable String bijnaam) {
+        docentService.verwijderBijnaam(id, bijnaam);
+    }
+    @GetMapping("{id}/emailAdres")
+    String findEmailAdresById(@PathVariable long id) {
+        return docentService.findById(id)
+                .orElseThrow(DocentNietGevondenException::new)
+                .getEmailAdres();
     }
 }

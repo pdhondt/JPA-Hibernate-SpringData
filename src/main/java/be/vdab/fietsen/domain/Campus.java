@@ -10,13 +10,13 @@ import jakarta.persistence.Table;
 public class Campus {
     @Id
     private long id;
-    private String name;
+    private String naam;
     @Embedded
     private Adres adres;
 
-    public Campus(long id, String name, Adres adres) {
+    public Campus(long id, String naam, Adres adres) {
         this.id = id;
-        this.name = name;
+        this.naam = naam;
         this.adres = adres;
     }
     protected Campus() {
@@ -27,8 +27,8 @@ public class Campus {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getNaam() {
+        return naam;
     }
 
     public Adres getAdres() {

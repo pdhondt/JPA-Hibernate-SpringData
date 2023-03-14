@@ -3,6 +3,7 @@ package be.vdab.fietsen.domain;
 import jakarta.persistence.*;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,7 @@ public class Campus {
         this.id = id;
         this.naam = naam;
         this.adres = adres;
+        this.huurprijzen = new LinkedHashSet<>();
     }
     protected Campus() {
 

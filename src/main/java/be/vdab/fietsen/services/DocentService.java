@@ -94,4 +94,7 @@ public class DocentService {
                 .orElseThrow(DocentNietGevondenException::new)
                 .verwijderBijnaam(bijnaam);
     }
+    public List<Docent> findAllMetBijnamen() {
+        return docentRepository.findAllMetBijnamen();
+    }
 }

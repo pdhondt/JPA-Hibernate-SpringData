@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("docenten")
@@ -25,6 +27,18 @@ class DocentController {
     private record WeddeVerhoging(@NotNull @Positive BigDecimal bedrag){}
     private record Opslag(@NotNull @Positive BigDecimal bedrag) {}
     private record NieuweBijnaam(@NotBlank String bijnaam) {}
+    private record DocentBeknopt(long id, String voornaam, String familienaam) {
+        DocentBeknopt(Docent docent) {
+            this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam());
+        }
+    }
+    private record DocentBeknoptMetBijnamen(long id, String voornaam,
+                                            String familienaam, Set<String> bijnamen) {
+        DocentBeknoptMetBijnamen(Docent docent) {
+            this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam(),
+                    docent.getBijnamen());
+        }
+    }
 
     DocentController(DocentService docentService) {
         this.docentService = docentService;
@@ -36,8 +50,10 @@ class DocentController {
     }
 
     @GetMapping
-    List<Docent> findAll() {
-        return docentService.findAll();
+    Stream<DocentBeknopt> findAll() {
+        return docentService.findAll()
+                .stream()
+                .map(DocentBeknopt::new);
     }
 
     @GetMapping("{id}")
@@ -72,8 +88,10 @@ class DocentController {
         }
     }
     @GetMapping(params = "wedde")
-    List<Docent> findByWedde(BigDecimal wedde) {
-        return docentService.findByWedde(wedde);
+    Stream<DocentBeknopt> findByWedde(BigDecimal wedde) {
+        return docentService.findByWedde(wedde)
+                .stream()
+                .map(DocentBeknopt::new);
     }
     @GetMapping(params = "emailAdres")
     Docent findByEmailAdres(String emailAdres) {
@@ -85,8 +103,10 @@ class DocentController {
         return docentService.findAantalMetWedde(wedde);
     }
     @GetMapping("metGrootsteWedde")
-    List<Docent> findMetGrootsteWedde() {
-        return docentService.findMetGrootsteWedde();
+    Stream<DocentBeknopt> findMetGrootsteWedde() {
+        return docentService.findMetGrootsteWedde()
+                .stream()
+                .map(DocentBeknopt::new);
     }
     @GetMapping("weddes/grootste")
     BigDecimal findGrootsteWedde() {
@@ -119,5 +139,11 @@ class DocentController {
         return docentService.findById(id)
                 .orElseThrow(DocentNietGevondenException::new)
                 .getEmailAdres();
+    }
+    @GetMapping("metBijnamen")
+    Stream<DocentBeknoptMetBijnamen> findAllMetBijnamen() {
+        return docentService.findAllMetBijnamen()
+                .stream()
+                .map(DocentBeknoptMetBijnamen::new);
     }
 }

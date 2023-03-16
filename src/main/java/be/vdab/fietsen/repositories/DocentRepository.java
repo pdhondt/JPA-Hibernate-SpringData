@@ -60,4 +60,7 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
 
     @Query("select d from Docent d join fetch d.bijnamen")
     List<Docent> findAllMetBijnamen();
+
+    @Query("select d from Docent d join fetch d.campus")
+    List<Docent> findAllMetCampussen();
 }

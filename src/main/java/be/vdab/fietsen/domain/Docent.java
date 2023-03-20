@@ -94,4 +94,14 @@ public class Docent {
     public Set<String> getBijnamen() {
         return Collections.unmodifiableSet(bijnamen);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Docent docent &&
+                emailAdres.equalsIgnoreCase(docent.emailAdres);
+    }
+    @Override
+    public int hashCode() {
+        return emailAdres.toLowerCase().hashCode();
+    }
 }

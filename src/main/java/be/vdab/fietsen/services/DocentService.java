@@ -48,6 +48,7 @@ public class DocentService {
             var docent = new Docent(nieuweDocent.voornaam(), nieuweDocent.familienaam(),
                     nieuweDocent.wedde(), nieuweDocent.emailAdres(), nieuweDocent.geslacht(),
                     campus);
+            campus.voegDocentToe(docent);
             docentRepository.save(docent);
             return docent.getId();
         } catch (DataIntegrityViolationException ex) {

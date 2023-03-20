@@ -1,10 +1,7 @@
 package be.vdab.fietsen.controllers;
 
 import be.vdab.fietsen.domain.Docent;
-import be.vdab.fietsen.dto.AantalDocentenPerWedde;
-import be.vdab.fietsen.dto.CampusBeknopt;
-import be.vdab.fietsen.dto.EnkelNaam;
-import be.vdab.fietsen.dto.NieuweDocent;
+import be.vdab.fietsen.dto.*;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzigdeDeDocentException;
 import be.vdab.fietsen.services.DocentService;
@@ -28,11 +25,7 @@ class DocentController {
     private record WeddeVerhoging(@NotNull @Positive BigDecimal bedrag){}
     private record Opslag(@NotNull @Positive BigDecimal bedrag) {}
     private record NieuweBijnaam(@NotBlank String bijnaam) {}
-    private record DocentBeknopt(long id, String voornaam, String familienaam) {
-        DocentBeknopt(Docent docent) {
-            this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam());
-        }
-    }
+
     private record DocentBeknoptMetBijnamen(long id, String voornaam,
                                             String familienaam, Set<String> bijnamen) {
         DocentBeknoptMetBijnamen(Docent docent) {

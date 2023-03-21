@@ -4,10 +4,7 @@ import be.vdab.fietsen.domain.Docent;
 import be.vdab.fietsen.dto.AantalDocentenPerWedde;
 import be.vdab.fietsen.dto.EnkelNaam;
 import jakarta.persistence.LockModeType;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +15,7 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
     @Query("select d from Docent d where d.id = :id")
     Optional<Docent> findAndLockById(long id);
 
+    @EntityGraph(attributePaths = "campus")
     List<Docent> findByWeddeOrderByFamilienaamAscVoornaamAsc(BigDecimal wedde);
 
     Optional<Docent> findByEmailAdres(String emailAdres);

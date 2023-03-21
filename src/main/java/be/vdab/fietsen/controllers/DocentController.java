@@ -161,4 +161,12 @@ class DocentController {
                 .stream()
                 .map(docent -> new DocentBeknoptMetCampus(docent));
     }
+    @GetMapping("{id}/taken")
+    Stream<TaakBeknopt> findTaken(@PathVariable long id) {
+        return docentService.findById(id)
+                .orElseThrow(DocentNietGevondenException::new)
+                .getTaken()
+                .stream()
+                .map(taak -> new TaakBeknopt(taak));
+    }
 }

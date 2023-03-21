@@ -1,6 +1,7 @@
 package be.vdab.fietsen.domain;
 
 import be.vdab.fietsen.exceptions.DocentHeeftDezeBijnaamAlException;
+import be.vdab.fietsen.exceptions.DocentHeeftDezeTaakAlException;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -31,6 +32,9 @@ public class Docent {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "campusId")
     private Campus campus;
+    @ManyToMany(mappedBy = "docenten")
+    @OrderBy("naam")
+    private Set<Taak> taken;
 
     public Docent(String voornaam, String familienaam, BigDecimal wedde,
                   String emailAdres, Geslacht geslacht, Campus campus) {
@@ -41,6 +45,7 @@ public class Docent {
         this.geslacht = geslacht;
         this.bijnamen = new LinkedHashSet<>();
         this.campus = campus;
+        this.taken = new LinkedHashSet<>();
     }
 
     protected Docent() {
@@ -93,6 +98,14 @@ public class Docent {
 
     public Set<String> getBijnamen() {
         return Collections.unmodifiableSet(bijnamen);
+    }
+    public void add(Taak taak) {
+        if (!taken.add(taak)) {
+            throw new DocentHeeftDezeTaakAlException();
+        }
+    }
+    public Set<Taak> getTaken() {
+        return Collections.unmodifiableSet(taken);
     }
 
     @Override
